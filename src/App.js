@@ -4,7 +4,7 @@ import "./App.css";
 
 function App() {
   const [appState, changeState] = useState({
-    activeObject: [],
+    activeObject: null,
     objects: [
       { id: 1, toggled: false },
       { id: 2, toggled: false },
@@ -14,18 +14,11 @@ function App() {
   });
 
   function toggleActive(index) {
-    let activeObjectsCopy = [...appState.activeObject];
-
-    if (activeObjectsCopy.length < 2) {
-      activeObjectsCopy.push(appState.objects[index]);
-      changeState({ ...appState, activeObject: activeObjectsCopy });
-    } else {
-      changeState({ ...appState, activeObject: [] });
-    }
+    changeState({ ...appState, activeObject: appState.objects[index] });
   }
 
   function toggleActiveStyles(index) {
-    if (appState.activeObject.includes(appState.objects[index])) {
+    if (appState.objects[index] === appState.activeObject) {
       return "box active";
     } else {
       return "box inactive";
