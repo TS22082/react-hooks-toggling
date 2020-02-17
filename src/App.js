@@ -1,24 +1,46 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+
+import "./App.css";
 
 function App() {
+  const [appState, changeState] = useState({
+    activeObject: [],
+    objects: [
+      { id: 1, toggled: false },
+      { id: 2, toggled: false },
+      { id: 3, toggled: false },
+      { id: 4, toggled: false }
+    ]
+  });
+
+  function toggleActive(index) {
+    let activeObjectsCopy = [...appState.activeObject];
+
+    if (activeObjectsCopy.length < 2) {
+      activeObjectsCopy.push(appState.objects[index]);
+      changeState({ ...appState, activeObject: activeObjectsCopy });
+    } else {
+      changeState({ ...appState, activeObject: [] });
+    }
+  }
+
+  function toggleActiveStyles(index) {
+    if (appState.activeObject.includes(appState.objects[index])) {
+      return "box active";
+    } else {
+      return "box inactive";
+    }
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {appState.objects.map((element, index) => (
+        <div
+          key={index}
+          className={toggleActiveStyles(index)}
+          onClick={() => toggleActive(index)}
+        ></div>
+      ))}
     </div>
   );
 }
